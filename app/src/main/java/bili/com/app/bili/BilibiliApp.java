@@ -11,6 +11,8 @@ import com.squareup.leakcanary.LeakCanary;
 
 public class BilibiliApp extends Application{
 
+    public static BilibiliApp mInstance;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -24,5 +26,10 @@ public class BilibiliApp extends Application{
             .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                 .build());
     }
+
+    public static BilibiliApp getInstance(){
+        return mInstance;
+    }
+
 
 }
