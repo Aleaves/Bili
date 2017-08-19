@@ -17,6 +17,8 @@ public class BilibiliApp extends Application{
     public void onCreate() {
         super.onCreate();
 
+        mInstance = this;
+
         //内存泄漏检测工具
         LeakCanary.install(this);
 

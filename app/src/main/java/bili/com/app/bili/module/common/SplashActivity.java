@@ -16,6 +16,7 @@ import bili.com.app.bili.utils.SystemUiVisibilityUtil;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 /**
@@ -35,8 +36,9 @@ public class SplashActivity extends RxActivity{
     }
 
     private void setUpSplash(){
-        Observable.timer(2000, TimeUnit.MICROSECONDS)
+        Observable.timer(2000, TimeUnit.MILLISECONDS)
                 .compose(bindToLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(along ->finishTask());
     }
 
@@ -45,8 +47,9 @@ public class SplashActivity extends RxActivity{
         if(isLogin){
             startActivity(new Intent(this, MainActivity.class));
         }else{
-
+            startActivity(new Intent(this, LoginActivity.class));
         }
+        this.finish();
     }
 
     @Override
