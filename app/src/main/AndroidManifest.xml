@@ -34,6 +34,11 @@
             android:theme="@style/MainActivityColorTranslucentTheme"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
             />
+
+        <activity android:name=".module.common.BrowserActivity"
+            android:screenOrientation="portrait"
+            />
+
     </application>
 
 </manifest>

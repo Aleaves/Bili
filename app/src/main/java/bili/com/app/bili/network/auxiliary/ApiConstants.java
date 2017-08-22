@@ -8,6 +8,7 @@ package bili.com.app.bili.network.auxiliary;
  */
 
 public class ApiConstants {
+    public static final String GANK_BASE_URL = "http://gank.io/api/";
     public static final String BILI_GO_BASE_URL = "http://bilibili-service.daoapp.io/";
     public static final String RANK_BASE_URL = "http://www.bilibili.com/";
     public static final String APP_BASE_URL = "http://app.bilibili.com/";

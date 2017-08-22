@@ -1,5 +1,7 @@
 package bili.com.app.bili.network;
 
+import android.util.Log;
+
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.io.File;
@@ -9,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import bili.com.app.bili.BilibiliApp;
 import bili.com.app.bili.BuildConfig;
 import bili.com.app.bili.network.api.BiliAppService;
+import bili.com.app.bili.network.api.GankService;
 import bili.com.app.bili.network.api.LiveService;
 import bili.com.app.bili.network.auxiliary.ApiConstants;
 import bili.com.app.bili.utils.CommonUtil;
@@ -43,6 +46,10 @@ public class RetrofitHelper {
         return createApi(BiliAppService.class, ApiConstants.APP_BASE_URL);
     }
 
+    public static GankService getGankApi(){
+        return createApi(GankService.class,ApiConstants.GANK_BASE_URL);
+    }
+
     public static void initOkHttpClient(){
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -50,10 +57,12 @@ public class RetrofitHelper {
             synchronized (RetrofitHelper.class) {
                 if (mOkHttpClient == null) {
                     Cache cache = new Cache(new File(BilibiliApp.getInstance().getCacheDir(),"HttpCache"),1024*1024*10);
+                    CacheInterceptor cacheInterceptor = new CacheInterceptor();
                     mOkHttpClient = new OkHttpClient.Builder()
                             .cache(cache)
                             .addInterceptor(interceptor)
-                            .addNetworkInterceptor(new CacheInterceptor())
+                            .addInterceptor(cacheInterceptor)
+                            .addNetworkInterceptor(cacheInterceptor)
                             .addNetworkInterceptor(new StethoInterceptor())
                             .retryOnConnectionFailure(true)
                             .connectTimeout(30, TimeUnit.SECONDS)
