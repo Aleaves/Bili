@@ -61,4 +61,9 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.aliyun.ams:alicloud-android-ut:5.0.0'
 
+    compile 'tv.danmaku.ijk.media:ijkplayer-java:0.6.0'
+    compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.6.0'
+    compile 'tv.danmaku.ijk.media:ijkplayer-armv5:0.6.1'
+    compile 'tv.danmaku.ijk.media:ijkplayer-x86:0.6.1'
+
 }

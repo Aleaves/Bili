@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -24,7 +25,9 @@ import android.webkit.WebViewClient;
 
 import bili.com.app.bili.R;
 import bili.com.app.bili.base.RxBaseActivity;
+import bili.com.app.bili.utils.ClipboardUtil;
 import bili.com.app.bili.utils.ConstantUtil;
+import bili.com.app.bili.utils.ToastUtil;
 import bili.com.app.bili.widget.CircleProgressView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -154,9 +157,30 @@ public class BrowserActivity extends RxBaseActivity {
             case android.R.id.home:
                 onBackPressed();
                 break;
+            case R.id.menu_share:
+                share();
+                break;
+            case R.id.menu_open:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+                break;
+            case R.id.menu_copy:
+                ClipboardUtil.setText(BrowserActivity.this,url);
+                ToastUtil.ShortToast("已复制");
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void share() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+        intent.putExtra(Intent.EXTRA_TEXT, "来自「哔哩哔哩」的分享:" + url);
+        startActivity(Intent.createChooser(intent, mTitle));
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -168,4 +192,13 @@ public class BrowserActivity extends RxBaseActivity {
             finish();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_browser, menu);
+        return true;
+    }
+
+
+
 }

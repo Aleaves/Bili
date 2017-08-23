@@ -39,6 +39,10 @@
             android:screenOrientation="portrait"
             />
 
+        <activity android:name=".module.home.live.LivePlayerActivity"
+            android:screenOrientation="portrait"
+            />
+
     </application>
 
 </manifest>

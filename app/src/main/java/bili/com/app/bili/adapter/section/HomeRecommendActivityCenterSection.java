@@ -1,5 +1,6 @@
 package bili.com.app.bili.adapter.section;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,9 @@ import java.util.List;
 
 import bili.com.app.bili.R;
 import bili.com.app.bili.adapter.ActivityCenterRecyclerAdapter;
+import bili.com.app.bili.adapter.helper.AbsRecyclerViewAdapter;
 import bili.com.app.bili.entity.recommend.RecommendInfo;
+import bili.com.app.bili.module.common.BrowserActivity;
 import bili.com.app.bili.widget.sectioned.StatelessSection;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,8 +66,9 @@ public class HomeRecommendActivityCenterSection extends StatelessSection {
 //        centerViewHolder.mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext,
 //                LinearLayoutManager.HORIZONTAL, false));
         centerViewHolder.mRecyclerView.setLayoutManager(new GridLayoutManager(mContext,2));
-        centerViewHolder.mRecyclerView.setAdapter(new ActivityCenterRecyclerAdapter(
-                centerViewHolder.mRecyclerView, activitys));
+        ActivityCenterRecyclerAdapter adapter = new ActivityCenterRecyclerAdapter(
+                centerViewHolder.mRecyclerView, activitys);
+        centerViewHolder.mRecyclerView.setAdapter(adapter);
     }
 
 

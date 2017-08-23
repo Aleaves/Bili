@@ -1,5 +1,6 @@
 package bili.com.app.bili.adapter;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import java.util.List;
 import bili.com.app.bili.R;
 import bili.com.app.bili.adapter.helper.AbsRecyclerViewAdapter;
 import bili.com.app.bili.entity.recommend.RecommendInfo;
+import bili.com.app.bili.module.common.BrowserActivity;
 
 /**
  * Created by hcc on 16/8/27 19:19
@@ -52,6 +54,12 @@ public class ActivityCenterRecyclerAdapter extends AbsRecyclerViewAdapter {
                     .into(itemViewHolder.mVideoImg);
 
             itemViewHolder.mVideoTitle.setText(activitys.get(position).getTitle());
+            itemViewHolder.mVideoImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BrowserActivity.launch((Activity) getContext(),activitys.get(position).getParam(),activitys.get(position).getTitle());
+                }
+            });
         }
     }
 

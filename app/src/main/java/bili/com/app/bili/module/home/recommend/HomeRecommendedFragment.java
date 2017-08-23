@@ -15,6 +15,7 @@ import bili.com.app.bili.R;
 import bili.com.app.bili.adapter.section.HomeRecommendActivityCenterSection;
 import bili.com.app.bili.adapter.section.HomeRecommendBannerSection;
 import bili.com.app.bili.adapter.section.HomeRecommendTopicSection;
+import bili.com.app.bili.adapter.section.HomeRecommendedSection;
 import bili.com.app.bili.base.RxLazyFragment;
 import bili.com.app.bili.entity.recommend.RecommendBannerInfo;
 import bili.com.app.bili.entity.recommend.RecommendInfo;
@@ -175,12 +176,12 @@ public class HomeRecommendedFragment extends RxLazyFragment {
                                 results.get(i).getBody()));
                         break;
                     default:
-//                        mSectionedAdapter.addSection(new HomeRecommendedSection(
-//                                getActivity(),
-//                                results.get(i).getHead().getTitle(),
-//                                results.get(i).getType(),
-//                                results.get(1).getHead().getCount(),
-//                                results.get(i).getBody()));
+                        mSectionedAdapter.addSection(new HomeRecommendedSection(
+                                getActivity(),
+                                results.get(i).getHead().getTitle(),
+                                results.get(i).getType(),
+                                results.get(1).getHead().getCount(),
+                                results.get(i).getBody()));
                         break;
                 }
             }
