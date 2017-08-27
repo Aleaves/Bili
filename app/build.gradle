@@ -66,4 +66,6 @@ dependencies {
     compile 'tv.danmaku.ijk.media:ijkplayer-armv5:0.6.1'
     compile 'tv.danmaku.ijk.media:ijkplayer-x86:0.6.1'
 
+    compile 'com.zhy:flowlayout-lib:1.0.1'
+
 }

@@ -29,6 +29,7 @@ import java.util.Random;
 import bili.com.app.bili.R;
 import bili.com.app.bili.entity.recommend.RecommendInfo;
 import bili.com.app.bili.module.home.live.LivePlayerActivity;
+import bili.com.app.bili.module.home.video.VideoDetailsActivity;
 import bili.com.app.bili.utils.DisplayUtil;
 import bili.com.app.bili.widget.sectioned.StatelessSection;
 import butterknife.BindView;
@@ -111,8 +112,8 @@ public class HomeRecommendedSection extends StatelessSection {
                 case GOTO_BANGUMI:
                     break;
                 default:
-//                    VideoDetailsActivity.launch((Activity) mContext,
-//                            Integer.parseInt(bodyBean.getParam()), bodyBean.getCover());
+                    VideoDetailsActivity.launch((Activity) mContext,
+                            Integer.parseInt(bodyBean.getParam()), bodyBean.getCover());
                     break;
             }
         });

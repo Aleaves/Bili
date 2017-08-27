@@ -27,8 +27,10 @@ import java.util.concurrent.TimeUnit;
 
 import bili.com.app.bili.R;
 import bili.com.app.bili.base.RxBaseActivity;
+import bili.com.app.bili.module.user.UserInfoDetailsActivity;
 import bili.com.app.bili.network.RetrofitHelper;
 import bili.com.app.bili.utils.ConstantUtil;
+import bili.com.app.bili.utils.ToastUtil;
 import bili.com.app.bili.widget.CircleImageView;
 import bili.com.app.bili.widget.lovelike.LoveLikeLayout;
 import butterknife.BindView;
@@ -38,6 +40,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 /**
@@ -71,14 +74,14 @@ public class LivePlayerActivity extends RxBaseActivity {
     LoveLikeLayout mLoveLayout;
     @BindView(R.id.live_layout)
     FrameLayout mLiveLayout;
-//    @BindView(R.id.user_pic)
-//    CircleImageView mUserPic;
-//    @BindView(R.id.user_name)
-//    TextView mUserName;
-//    @BindView(R.id.live_num)
-//    TextView mLiveNum;
-//    @BindView(R.id.user_info_layout)
-//    RelativeLayout mUserInfoLayout;
+    @BindView(R.id.user_pic)
+    CircleImageView mUserPic;
+    @BindView(R.id.user_name)
+    TextView mUserName;
+    @BindView(R.id.live_num)
+    TextView mLiveNum;
+    @BindView(R.id.user_info_layout)
+    RelativeLayout mUserInfoLayout;
 
     private int flag = 0;
     private int cid;
@@ -157,25 +160,12 @@ public class LivePlayerActivity extends RxBaseActivity {
                         return null;
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMap(new Func1<String, Observable<Long>>() {
-                    @Override
-                    public Observable<Long> call(String s) {
-                        Log.i("========",s);
-                        playVideo(s);
-                        return Observable.timer(2000, TimeUnit.MILLISECONDS);
-                    }
-                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    stopAnim();
-                    isPlay = true;
-                    mVideoView.setVisibility(View.VISIBLE);
-                    mRightPlay.setImageResource(R.drawable.ic_tv_stop);
-                    mBottomPlay.setImageResource(R.drawable.ic_portrait_stop);
+                .subscribe(s -> {
+                    playVideo(s);
                 },throwable -> {
-                    LogUtil.d("直播地址url获取失败" + throwable.getMessage());
+                    ToastUtil.ShortToast("直播地址url获取失败");
                 });
     }
 
@@ -199,6 +189,16 @@ public class LivePlayerActivity extends RxBaseActivity {
             });
             ijkMediaPlayer.prepareAsync();
             ijkMediaPlayer.start();
+            ijkMediaPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(IMediaPlayer iMediaPlayer) {
+                    stopAnim();
+                    isPlay = true;
+                    mVideoView.setVisibility(View.VISIBLE);
+                    mRightPlay.setImageResource(R.drawable.ic_tv_stop);
+                    mBottomPlay.setImageResource(R.drawable.ic_portrait_stop);
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -206,15 +206,15 @@ public class LivePlayerActivity extends RxBaseActivity {
     }
 
     private void initUserInfo(){
-//        Glide.with(LivePlayerActivity.this)
-//                .load(face)
-//                .centerCrop()
-//                .dontAnimate()
-//                .placeholder(R.drawable.ico_user_default)
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .into(mUserPic);
-//        mUserName.setText(name);
-//        mLiveNum.setText(String.valueOf(online));
+        Glide.with(LivePlayerActivity.this)
+                .load(face)
+                .centerCrop()
+                .dontAnimate()
+                .placeholder(R.drawable.ico_user_default)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(mUserPic);
+        mUserName.setText(name);
+        mLiveNum.setText(String.valueOf(online));
     }
 
     @Override
@@ -228,7 +228,7 @@ public class LivePlayerActivity extends RxBaseActivity {
     }
 
     @OnClick({R.id.right_play, R.id.bottom_play, R.id.bottom_fullscreen,
-            R.id.video_view, R.id.bottom_love})
+            R.id.video_view, R.id.bottom_love,R.id.user_pic})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.right_play:
@@ -248,11 +248,11 @@ public class LivePlayerActivity extends RxBaseActivity {
                     flag = 0;
                 }
                 break;
-            //case R.id.user_pic:
-//                UserInfoDetailsActivity.launch(LivePlayerActivity.this, name, mid, face);
-//                ControlVideo();
-//                mRightPlayBtn.setVisibility(View.VISIBLE);
-            //    break;
+            case R.id.user_pic:
+                UserInfoDetailsActivity.launch(LivePlayerActivity.this, name, mid, face);
+                ControlVideo();
+                mRightPlay.setVisibility(View.VISIBLE);
+                break;
             case R.id.bottom_love:
                 mLoveLayout.addLove();
                 break;
@@ -295,6 +295,28 @@ public class LivePlayerActivity extends RxBaseActivity {
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(!isPlay&&ijkMediaPlayer!=null) {
+            ijkMediaPlayer.start();
+            isPlay = true;
+            mRightPlay.setImageResource(R.drawable.ic_tv_stop);
+            mBottomPlay.setImageResource(R.drawable.ic_portrait_stop);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (isPlay&&ijkMediaPlayer!=null) {
+            ijkMediaPlayer.pause();
+            isPlay = false;
+            mRightPlay.setImageResource(R.drawable.ic_tv_play);
+            mBottomPlay.setImageResource(R.drawable.ic_portrait_play);
+        }
     }
 
 }

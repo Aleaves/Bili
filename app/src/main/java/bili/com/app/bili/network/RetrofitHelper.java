@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import bili.com.app.bili.BilibiliApp;
 import bili.com.app.bili.BuildConfig;
+import bili.com.app.bili.network.api.BiliApiService;
 import bili.com.app.bili.network.api.BiliAppService;
 import bili.com.app.bili.network.api.GankService;
 import bili.com.app.bili.network.api.LiveService;
@@ -50,6 +51,10 @@ public class RetrofitHelper {
         return createApi(GankService.class,ApiConstants.GANK_BASE_URL);
     }
 
+    public static BiliApiService getBiliAPI() {
+        return createApi(BiliApiService.class, ApiConstants.API_BASE_URL);
+    }
+
     public static void initOkHttpClient(){
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -82,7 +87,7 @@ public class RetrofitHelper {
         @Override
         public Response intercept(Chain chain) throws IOException {
             // 有网络时 设置缓存超时时间1个小时
-            int maxAge = 5;
+            int maxAge = 60*60;
             // 无网络时，设置超时为1天
             int maxStale = 60 * 60 * 24;
             Request request = chain.request();

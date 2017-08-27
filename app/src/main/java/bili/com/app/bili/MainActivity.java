@@ -53,6 +53,11 @@ public class MainActivity extends RxBaseActivity implements NavigationView.OnNav
 
     }
 
+    @Override
+    public void setStatusBarColor() {
+
+    }
+
     private void initFragments() {
         mHomePageFragment = HomePageFragment.newInstance();
         IFavoritesFragment mFavoritesFragment = IFavoritesFragment.newInstance();
